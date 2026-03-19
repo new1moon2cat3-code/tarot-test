@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塔羅牌學習指南 - 初學者入門</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #c9a959;
+            --bg-light: #faf6f0;
+            --bg-dark: #1a1a2e;
+            --text: #333;
+            --text-light: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg-light);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--primary);
+            padding: 0.8rem;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
+            text-align: center;
+            padding: 7rem 2rem 3rem;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        header p {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            max-width: 600px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin: 3rem 0;
+        }
+
+        h2 {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin: 1rem 0;
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, #fff 0%, #f0e6d8 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+        }
+
+        .credit-note {
+            background: rgba(201, 169, 89, 0.15);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .major-arcana-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 1rem;
+        }
+
+        .minor-arcana-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .card-item {
+            background: #fff;
+            border-radius: 10px;
+            padding: 0.6rem;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .card-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-item .card-image {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(145deg, #e8d5c4 0%, #c9a959 50%, #8b4513 100%);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-item .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-item .card-name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.75rem;
+        }
+
+        .card-item .card-name-en {
+            font-size: 0.65rem;
+            color: #888;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.88);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-light);
+            border-radius: 15px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .modal-card-image {
+            width: 160px;
+            height: 240px;
+            margin: 0 auto 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+        }
+
+        .modal-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal h3 {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .meaning-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 0.9rem;
+            margin: 0.8rem 0;
+        }
+
+        .meaning-box h4 {
+            color: var(--secondary);
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .meaning-box p {
+            font-size: 0.9rem;
+        }
+
+        .suit-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .suit-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .suit-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        .suit-wands { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
+        .suit-cups { background: linear-gradient(135deg, #4ecdc4, #44b8b0); }
+        .suit-swords { background: linear-gradient(135deg, #667eea, #5a6fd6); }
+        .suit-pentacles { background: linear-gradient(135deg, #f093fb, #c4a35a); }
+
+        .spread-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spread-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .spread-card h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .spread-diagram {
+            background: linear-gradient(135deg, #f5f0e6 0%, #e8d5c4 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.8rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .spread-positions {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .example-reading {
+            background: linear-gradient(135deg, #2c1810 0%, #1a1a2e 100%);
+            color: var(--text-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-reading h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .reading-result {
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.8rem 0;
+        }
+
+        .reading-result h4 {
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .example-cards {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .example-card {
+            text-align: center;
+        }
+
+        .example-card-img {
+            width: 70px;
+            height: 105px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid var(--accent);
+        }
+
+        .example-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .example-card-label {
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        footer {
+            background: var(--primary);
+            color: var(--text-light);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        footer p.credit {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 0.6rem;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .major-arcana-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            }
+
+            .minor-arcana-grid {
+                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            }
+
+            .modal-card-image {
+                width: 130px;
+                height: 195px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#intro">認識塔羅</a></li>
+            <li><a href="#major">大阿爾卡納</a></li>
+            <li><a href="#minor">小阿爾卡納</a></li>
+            <li><a href="#spreads">牌陣</a></li>
+            <li><a href="#example">解牌範例</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>塔羅牌學習指南</h1>
+        <p>探索78張塔羅牌的智慧，從初學者到解讀者的完整旅程</p>
+    </header>
+
+    <main class="container">
+        <section id="intro">
+            <h2>什麼是塔羅牌？</h2>
+            <div class="intro-card">
+                <p>塔羅牌是一套具有數百年歷史的象徵系統，包含<strong>78張牌</strong>，分為兩個主要部分：</p>
+                <br>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <h3>大阿爾卡納 (Major Arcana)</h3>
+                        <p>22張代表人生重大主題的牌，象徵靈魂旅程中的重要轉折點與生命課題。</p>
+                    </div>
+                    <div>
+                        <h3>小阿爾卡納 (Minor Arcana)</h3>
+                        <p>56張代表日常生活各方面事務的牌，分為四個花色：權杖、聖杯、寶劍、星幣。</p>
+                    </div>
+                </div>
+                <br>
+                <h3>關於正位與逆位</h3>
+                <p><strong>正位</strong>：牌的正常能量流動，代表能量外顯或順暢</p>
+                <p><strong>逆位</strong>：牌的能量受阻、內化或以不同方式表達</p>
+            </div>
+
+            <div class="credit-note">
+                <strong>图片来源说明：</strong>本页面使用的塔罗牌图片均为 Rider-Waite-Smith 牌组（1909年出版），属于公有领域作品。图片来源于 Wikimedia Commons。
+            </div>
+        </section>
+
+        <section id="major">
+            <h2>大阿爾卡納 22張牌</h2>
+            <p style="margin-bottom: 1rem;">點擊任意一張牌查看詳細牌義</p>
+            <div class="major-arcana-grid" id="majorArcanaGrid"></div>
+        </section>
+
+        <section id="minor">
+            <h2>小阿爾卡納 56張牌</h2>
+            
+            <div class="suit-section">
+                <div class="suit-header">
+                    <div class="suit-icon suit-wands">🔥</div>
+                    <div>
+                        <h3>權杖牌組 (Wands)</h3>
+                        <p>火元素 · 熱情、創造力、行動力</p>
+                    </div>
+                </div>
+                <div class="minor-arcana-grid" id="wandsGrid"></div>
+            </div>
+
+            <div class="suit-section">
+                <div class="suit-header">
+                    <div class="suit-icon suit-cups">💧</div>
+                    <div>
+                        <h3>聖杯牌組 (Cups)</h3>
+                        <p>水元素 · 情感、愛情、直覺</p>
+                    </div>
+                </div>
+                <div class="minor-arcana-grid" id="cupsGrid"></div>
+            </div>
+
+            <div class="suit-section">
+                <div class="suit-header">
+                    <div class="suit-icon suit-swords">⚔️</div>
+                    <div>
+                        <h3>寶劍牌組 (Swords)</h3>
+                        <p>風元素 · 思維、溝通、挑戰</p>
+                    </div>
+                </div>
+                <div class="minor-arcana-grid" id="swordsGrid"></div>
+            </div>
+
+            <div class="suit-section">
+                <div class="suit-header">
+                    <div class="suit-icon suit-pentacles">🌟</div>
+                    <div>
+                        <h3>星幣牌組 (Pentacles)</h3>
+                        <p>土元素 · 物質、財務、工作</p>
+                    </div>
+                </div>
+                <div class="minor-arcana-grid" id="pentaclesGrid"></div>
+            </div>
+        </section>
+
+        <section id="spreads">
+            <h2>常用牌陣</h2>
+            <div class="spread-container">
+                <div class="spread-card">
+                    <h4>單牌抽牌</h4>
+                    <p>最簡單的方式，適合快速獲取一個問題的直覺指引。</p>
+                    <div class="spread-diagram">
+                        <div style="width: 60px; height: 90px; background: #c9a959; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #2c1810; font-weight: bold;">?</div>
+                    </div>
+                    <div class="spread-positions">
+                        <strong>位置意義：</strong><br>
+                        代表問題的核心答案或指引
+                    </div>
+                </div>
+
+                <div class="spread-card">
+                    <h4>三牌抽牌</h4>
+                    <p>經典的過去-現在-未來牌陣，適合深入了解問題的時間線。</p>
+                    <div class="spread-diagram">
+                        <div style="display: flex; gap: 0.8rem;">
+                            <div style="text-align: center;">
+                                <div style="width: 45px; height: 68px; background: #c9a959; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #2c1810; font-weight: bold; font-size: 0.7rem;">過去</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="width: 45px; height: 68px; background: #c9a959; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #2c1810; font-weight: bold; font-size: 0.7rem;">現在</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="width: 45px; height: 68px; background: #c9a959; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #2c1810; font-weight: bold; font-size: 0.7rem;">未來</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spread-positions">
+                        <strong>位置意義：</strong><br>
+                        左牌：過去的影響<br>
+                        中牌：現況分析<br>
+                        右牌：未來走向
+                    </div>
+                </div>
+
+                <div class="spread-card">
+                    <h4>感情牌陣</h4>
+                    <p>專為感情關係設計的牌陣，分析愛情中的各個面向。</p>
+                    <div class="spread-diagram">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                            <div style="width: 45px; height: 68px; background: #c9a959; border-radius: 5px;"></div>
+                            <div style="display: flex; gap: 4px;">
+                                <div style="width: 32px; height: 48px; background: #c9a959; border-radius: 4px;"></div>
+                                <div style="width: 32px; height: 48px; background: #c9a959; border-radius: 4px;"></div>
+                            </div>
+                            <div style="display: flex; gap: 4px;">
+                                <div style="width: 32px; height: 48px; background: #c9a959; border-radius: 4px;"></div>
+                                <div style="width: 32px; height: 48px; background: #c9a959; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spread-positions">
+                        <strong>位置意義：</strong><br>
+                        1.你 2.對方 3.你們的關係<br>
+                        4.過去 5.現在 6.未來
+                    </div>
+                </div>
+
+                <div class="spread-card">
+                    <h4>塞爾特十字牌陣</h4>
+                    <p>經典的深入牌陣，共10張牌，適合複雜問題的全面分析。</p>
+                    <div class="spread-diagram">
+                        <div style="display: grid; grid-template-columns: repeat(5, 30px); gap: 2px;">
+                            <div></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                            <div></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                            <div></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                            <div style="width: 30px; height: 45px; background: #c9a959; border-radius: 3px;"></div>
+                        </div>
+                    </div>
+                    <div class="spread-positions">
+                        <strong>位置意義：</strong><br>
+                        1.核心問題 2.阻礙 3.基礎 4.過去 5.可能<br>
+                        6.未來 7.自己 8.環境 9.希望/恐懼 10.結果
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="example">
+            <h2>解牌範例</h2>
+            <div class="example-reading">
+                <h3>三牌抽牌 - 關於工作轉換</h3>
+                <p style="margin-bottom: 1rem; opacity: 0.9;">求問者想知道自己是否應該離開現職，轉換到新的工作機會。</p>
+                
+                <div class="example-cards">
+                    <div class="example-card">
+                        <div class="example-card-img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/RWS_Tarot_05_Hierophant.jpg/330px-RWS_Tarot_05_Hierophant.jpg" alt="教皇" onerror="this.parentElement.innerHTML='教皇'">
+                        </div>
+                        <div class="example-card-label">過去：教皇</div>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-card-img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/RWS_Tarot_01_Magician.jpg/330px-RWS_Tarot_01_Magician.jpg" alt="魔術師" onerror="this.parentElement.innerHTML='魔術師'">
+                        </div>
+                        <div class="example-card-label">現在：魔術師</div>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-card-img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/RWS_Tarot_17_Star.jpg/330px-RWS_Tarot_17_Star.jpg" alt="星星" onerror="this.parentElement.innerHTML='星星'">
+                        </div>
+                        <div class="example-card-label">未來：星星</div>
+                    </div>
+                </div>
+
+                <div class="reading-result">
+                    <h4>牌義解讀：</h4>
+                    <p><strong>過去 - 教皇：</strong>過去你在工作中遵循傳統規範，可能受到制度或長輩的影響，建立了一定的職業模式。</p>
+                    <p><strong>現在 - 魔術師：</strong>這是一個非常正面的信號！魔術師代表你現在擁有實現轉變所需的所有能力和資源。你有足夠的技能、意志力和創造力來創造新的局面。</p>
+                    <p><strong>未來 - 星星：</strong>如果現在做出改變，你將迎來希望、療癒和新的方向。星星象徵著靈感與目標的重新確立，預示著你會找到讓自己煥發光彩的道路。</p>
+                </div>
+
+                <div class="reading-result">
+                    <h4>綜合建議：</h4>
+                    <p>牌組顯示這是一個適合轉換的時機。過去的經驗讓你更加清楚自己想要的，而現在的你已經準備好了。建議你勇敢踏出這一步！</p>
+                </div>
+            </div>
+
+            <div class="example-reading">
+                <h3>感情牌陣 - 關係走向</h3>
+                <p style="margin-bottom: 1rem; opacity: 0.9;">求問者與曖昧對象的關係是否會有進一步發展。</p>
+                
+                <div class="example-cards">
+                    <div class="example-card">
+                        <div class="example-card-img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/RWS_Tarot_10_Wheel_of_Fortune.jpg/330px-RWS_Tarot_10_Wheel_of_Fortune.jpg" alt="命運之輪" onerror="this.parentElement.innerHTML='命運'">
+                        </div>
+                        <div class="example-card-label">你：命運之輪</div>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-card-img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/RWS_Tarot_06_Lovers.jpg/330px-RWS_Tarot_06_Lovers.jpg" alt="戀人" onerror="this.parentElement.innerHTML='戀人'">
+                        </div>
+                        <div class="example-card-label">對方：戀人</div>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-card-img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/RWS_Tarot_02_High_Priestess.jpg/330px-RWS_Tarot_02_High_Priestess.jpg" alt="女祭司" onerror="this.parentElement.innerHTML='女祭司'">
+                        </div>
+                        <div class="example-card-label">關係：女祭司</div>
+                    </div>
+                </div>
+
+                <div class="reading-result">
+                    <h4>牌義解讀：</h4>
+                    <p><strong>你 - 命運之輪：</strong>你感受到命運正在轉動，生活中有許多變化正在發生，你對這段關係充滿期待。</p>
+                    <p><strong>對方 - 戀人：</strong>對方對你有強烈的好感，代表著重要的選擇與深刻的情感連接。</p>
+                    <p><strong>關係 - 女祭司：</strong>你們之間存在著神秘的吸引力，關係中有些事情尚未揭曉，需要時間和耐心。</p>
+                </div>
+
+                <div class="reading-result">
+                    <h4>綜合建議：</h4>
+                    <p>這是一個充滿可能性的牌陣。建議你保持耐心，讓事情自然發展，同時多倾听自己內心的聲音。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>塔羅牌學習指南 | 僅供教育與自我探索用途</p>
+        <p>記住：塔羅牌是自我反思的工具，真正的答案永遠在你自己心中</p>
+        <p class="credit">塔羅牌圖片來源：Rider-Waite-Smith 公有領域作品 (Wikimedia Commons)</p>
+    </footer>
+
+    <div class="modal" id="cardModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-card-image" id="modalCardImage"></div>
+            <h3 id="modalCardName"></h3>
+            <p style="text-align: center; color: #888; font-size: 0.9rem;" id="modalCardEn"></p>
+            <div class="meaning-box">
+                <h4>正位含義</h4>
+                <p id="modalUpright"></p>
+            </div>
+            <div class="meaning-box">
+                <h4>逆位含義</h4>
+                <p id="modalReversed"></p>
+            </div>
+            <div class="meaning-box">
+                <h4>核心精神</h4>
+                <p id="modalCore"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const majorArcana = [
+            { num: 0, name: "愚者", nameEn: "The Fool", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/00_-_The_Fool.jpg/330px-00_-_The_Fool.jpg", upright: "新的開始、無限潛能、冒險精神、純真、信念之躍", reversed: "魯莽、天真過度、踌躇不前、害怕改變、忽略風險", core: "以初學者之心踏上旅程，相信未知的美好" },
+            { num: 1, name: "魔術師", nameEn: "The Magician", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/RWS_Tarot_01_Magician.jpg/330px-RWS_Tarot_01_Magician.jpg", upright: "意志力、創造力、主動性、將想法化為現實、資源整合", reversed: "操控、資源浪費、技能未成熟、缺乏行動力、欺騙", core: "將上方（靈性）與下方（現實）連接，創造顯化" },
+            { num: 2, name: "女祭司", nameEn: "The High Priestess", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/RWS_Tarot_02_High_Priestess.jpg/330px-RWS_Tarot_02_High_Priestess.jpg", upright: "直覺、內在智慧、神秘、耐心等待、潛意識", reversed: "壓抑直覺、秘密資訊、情緒波動、偽裝、忽視內心", core: "深層的智慧存在於沉默與內省之中" },
+            { num: 3, name: "女皇", nameEn: "The Empress", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/RWS_Tarot_03_Empress.jpg/330px-RWS_Tarot_03_Empress.jpg", upright: "豐盛、母性、創造力、感官享受、自然、繁榮", reversed: "依賴、過度控制、創造力受阻、匱乏、忽視成長", core: "生命、愛與自然的豐盛力量" },
+            { num: 4, name: "皇帝", nameEn: "The Emperor", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/RWS_Tarot_04_Emperor.jpg/330px-RWS_Tarot_04_Emperor.jpg", upright: "權威、架構、穩定、領導力、紀律、實際掌控", reversed: "控制欲、固執僵化、缺乏彈性、暴政、逃避責任", core: "透過秩序與規則創造穩定的基礎" },
+            { num: 5, name: "教皇", nameEn: "The Hierophant", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/RWS_Tarot_05_Hierophant.jpg/330px-RWS_Tarot_05_Hierophant.jpg", upright: "傳統、精神導師、信仰、道德、遵循規範", reversed: "打破規則、非傳統、挑戰權威、偽善、精神危機", core: "透過傳統和共同價值觀尋求更高智慧" },
+            { num: 6, name: "戀人", nameEn: "The Lovers", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/RWS_Tarot_06_Lovers.jpg/330px-RWS_Tarot_06_Lovers.jpg", upright: "愛情、選擇、價值觀對齊、深度連結、和諧", reversed: "價值觀衝突、錯誤選擇、失衡、不和諧、溝通不良", core: "真正的連結需要真實的自我與正確的選擇" },
+            { num: 7, name: "戰車", nameEn: "The Chariot", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RWS_Tarot_07_Chariot.jpg/330px-RWS_Tarot_07_Chariot.jpg", upright: "意志力、決心、勝利、克服障礙、掌控、向前邁進", reversed: "失控、方向迷失、强迫前進、衝突、失去控制", core: "以強大的意志整合內在矛盾，向目標邁進" },
+            { num: 8, name: "力量", nameEn: "Strength", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/RWS_Tarot_08_Strength.jpg/330px-RWS_Tarot_08_Strength.jpg", upright: "內在力量、勇氣、耐心、溫柔的掌控、韌性", reversed: "缺乏自信、內在衝突、能量耗盡、脆弱、恐懼", core: "真正的力量來自內心，而非外在的蠻力" },
+            { num: 9, name: "隱士", nameEn: "The Hermit", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/RWS_Tarot_09_Hermit.jpg/330px-RWS_Tarot_09_Hermit.jpg", upright: "內省、孤獨、尋找真相、靈性嚮導、內在之光", reversed: "過度孤立、害怕社交、迷失方向、拒絕幫助", core: "在黑暗中尋找光亮，有時需要獨自前行" },
+            { num: 10, name: "命運之輪", nameEn: "Wheel of Fortune", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/RWS_Tarot_10_Wheel_of_Fortune.jpg/330px-RWS_Tarot_10_Wheel_of_Fortune.jpg", upright: "命運轉折、運氣、轉變、循環、意外發展", reversed: "阻礙、厄運、停滯、抗拒改變、錯過機會", core: "生命有其循環，學會順應變化" },
+            { num: 11, name: "正義", nameEn: "Justice", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/RWS_Tarot_11_Justice.jpg/330px-RWS_Tarot_11_Justice.jpg", upright: "公正、真相、法律、因果報應、決策、平衡", reversed: "不公正、偏見、不誠實、法律問題、報復", core: "每個行動都有後果，真相終將大白" },
+            { num: 12, name: "倒吊者", nameEn: "The Hanged Man", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/RWS_Tarot_12_Hanged_Man.jpg/330px-RWS_Tarot_12_Hanged_Man.jpg", upright: "犧牲、暫停、觀點轉變、放下、接受", reversed: "不願讓步、拖延、犧牲無效、抗拒改變", core: "有時需要暫停才能看到更完整的畫面" },
+            { num: 13, name: "死神", nameEn: "Death", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/RWS_Tarot_13_Death.jpg/330px-RWS_Tarot_13_Death.jpg", upright: "轉變、結束、蛻變、放下過去、新生", reversed: "抗拒改變、停滯不前、恐懼結束、拖延", core: "死亡是新生的開始，改變是蛻變的必經之路" },
+            { num: 14, name: "節制", nameEn: "Temperance", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/RWS_Tarot_14_Temperance.jpg/330px-RWS_Tarot_14_Temperance.jpg", upright: "平衡、調和、耐心、中等、康復", reversed: "失衡、過度、浪費、缺乏耐心、恢復中", core: "找到生命各方面的和諧點" },
+            { num: 15, name: "惡魔", nameEn: "The Devil", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/RWS_Tarot_15_Devil.jpg/330px-RWS_Tarot_15_Devil.jpg", upright: "誘惑、束縛、物質主義、舊習、依附", reversed: "解放、擺脫束縛、戰勝誘惑、重獲自由", core: "认清自己的枷锁，選擇走向自由" },
+            { num: 16, name: "高塔", nameEn: "The Tower", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/RWS_Tarot_16_Tower.jpg/330px-RWS_Tarot_16_Tower.jpg", upright: "突變、解放、破壞後重建、覺醒、意外", reversed: "延遲災難、內部破壞、避免衝突、恐懼改變", core: "有時需要高塔的崩塌才能帶來真正的覺醒" },
+            { num: 17, name: "星星", nameEn: "The Star", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/RWS_Tarot_17_Star.jpg/330px-RWS_Tarot_17_Star.jpg", upright: "希望、靈感、疗愈、平靜、指引、樂觀", reversed: "絕望、失去信念、缺乏希望、心靈乾涸", core: "即使在黑暗中，也要相信星星依然閃耀" },
+            { num: 18, name: "月亮", nameEn: "The Moon", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/RWS_Tarot_18_Moon.jpg/330px-RWS_Tarot_18_Moon.jpg", upright: "幻覺、恐懼、潛意識、夜晚、不確定性", reversed: "恐懼消退、看清真相、避免幻覺、困惑", core: "面對恐懼，有時需要更清晰的視野" },
+            { num: 19, name: "太陽", nameEn: "The Sun", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/RWS_Tarot_19_Sun.jpg/330px-RWS_Tarot_19_Sun.jpg", upright: "成功、快樂、活力、温暖、正能量、勝利", reversed: "暫時的悲傷、過度樂觀、能量降低", core: "陽光總會穿透雲層，帶來溫暖與光明" },
+            { num: 20, name: "審判", nameEn: "Judgement", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/RWS_Tarot_20_Judgement.jpg/330px-RWS_Tarot_20_Judgement.jpg", upright: "重生的呼喚、覺醒、寬恕、復原、新的開始", reversed: "拒絕反省、自我懷疑、悔恨、不寬恕", core: "過去的功過將在此刻得到審判與新生" },
+            { num: 21, name: "世界", nameEn: "The World", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/RWS_Tarot_21_World.jpg/330px-RWS_Tarot_21_World.jpg", upright: "完成、成就、統合、圓滿、到達目的地", reversed: "缺乏成就感、停滯、拖延、未能完成", core: "一個循環的結束，也是新的旅程的開始" }
+        ];
+
+        const minorArcana = {
+            wands: [
+                { name: "權杖 Ace", nameEn: "Ace of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Wands01.jpg/330px-Wands01.jpg", upright: "新計畫的開始、創造力爆發、極大的潛能", reversed: "延遲、缺乏熱情、動力不足", core: "生命的火花，等待被點燃" },
+                { name: "權杖 2", nameEn: "Two of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Wands02.jpg/330px-Wands02.jpg", upright: "決策、規劃、未來的可能性、發現", reversed: "恐懼未知、規劃延遲、缺乏遠見", core: "站在高處眺望，尋找方向" },
+                { name: "權杖 3", nameEn: "Three of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wands03.jpg/330px-Wands03.jpg", upright: "擴展、成長、遠見、等待成果", reversed: "阻礙、延遲、挫敗、有限的可能性", core: "船隊即將啟航，好消息來臨" },
+                { name: "權杖 4", nameEn: "Four of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Wands04.jpg/330px-Wands04.jpg", upright: "慶祝、和諧、穩定、家的感覺", reversed: "缺乏支持、衝突、慶祝結束", core: "勝利的花環，歡聚的時刻" },
+                { name: "權杖 5", nameEn: "Five of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Wands05.jpg/330px-Wands05.jpg", upright: "競爭、衝突、意見分歧、多樣性", reversed: "避免衝突、放下競爭、和解", core: "五根權杖的角力，衝突中的學習" },
+                { name: "權杖 6", nameEn: "Six of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Wands06.jpg/330px-Wands06.jpg", upright: "勝利、認可、成功、公眾的讚譽", reversed: "失敗、缺乏認可、聲譽受損", core: "凱旋歸來，光榮時刻" },
+                { name: "權杖 7", nameEn: "Seven of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Wands07.jpg/330px-Wands07.jpg", upright: "挑戰、競爭、堅持、保護你的立場", reversed: "被擊敗、感到無力、放棄", core: "居高臨下防守，最後的堅持" },
+                { name: "權杖 8", nameEn: "Eight of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Wands08.jpg/330px-Wands08.jpg", upright: "快速行動、速度、旅行、消息", reversed: "延遲、挫折、減速、等待", core: "八支權杖齊飛，事半功倍" },
+                { name: "權杖 9", nameEn: "Nine of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Tarot_Nine_of_Wands.jpg/330px-Tarot_Nine_of_Wands.jpg", upright: "韌性、勇氣、持久力、經驗豐富", reversed: "疲憊、倦怠、偏執、結束的開始", core: "傷痕累累仍站立，最後的堡壘" },
+                { name: "權杖 10", nameEn: "Ten of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wands10.jpg/330px-Wands10.jpg", upright: "壓力、負擔、辛勤工作、責任", reversed: "過度負擔、倦怠、優先順序錯誤", core: "沉重的負擔，但已接近目的地" },
+                { name: "權杖侍從", nameEn: "Page of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Wands11.jpg/330px-Wands11.jpg", upright: "充滿熱情的使者、好消息、探索", reversed: "過度承諾、缺乏方向、拖延", core: "帶著熱情的使者，開啟新的冒險" },
+                { name: "權杖騎士", nameEn: "Knight of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Wands12.jpg/330px-Wands12.jpg", upright: "行動、探險、勇敢、熱情", reversed: "魯莽、衝動、失去控制、停滯", core: "勇敢的騎士，向目標衝刺" },
+                { name: "權杖皇后", nameEn: "Queen of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Wands13.jpg/330px-Wands13.jpg", upright: "自信、魅力、獨立、熱情", reversed: "自私、嫉妒、控制、缺乏自信", core: "溫暖如火的皇后，照亮他人" },
+                { name: "權杖國王", nameEn: "King of Wands", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Wands14.jpg/330px-Wands14.jpg", upright: "領導力、遠見、果斷、創業精神", reversed: "傲慢、衝動、缺乏彈性、獨裁", core: "遠見卓識的領袖，指引方向" }
+            ],
+            cups: [
+                { name: "聖杯 Ace", nameEn: "Ace of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Cups01.jpg/330px-Cups01.jpg", upright: "新情感的萌芽、愛、豐盛", reversed: "情感匱乏、空虛、封閉的心", core: "聖杯滿溢，愛的開始" },
+                { name: "聖杯 2", nameEn: "Two of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Cups02.jpg/330px-Cups02.jpg", upright: "伴侶關係、結合、愛情", reversed: "失衡、分離、單方面的奉獻", core: "兩杯相合，美好關係的象徵" },
+                { name: "聖杯 3", nameEn: "Three of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Cups03.jpg/330px-Cups03.jpg", upright: "友誼、社群、慶祝、交誼", reversed: "孤獨、格格不入、太多社交", core: "三位女子的歡聚，友誼的力量" },
+                { name: "聖杯 4", nameEn: "Four of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Cups04.jpg/330px-Cups04.jpg", upright: "冷漠、不滿、沉思、抑鬱", reversed: "接受、改變、新的機會", core: "對眼前的事物視而不見" },
+                { name: "聖杯 5", nameEn: "Five of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cups05.jpg/330px-Cups05.jpg", upright: "失落、悲傷、遺憾、悲觀", reversed: "接受、放下、尋找替代、寬恕", core: "打翻的聖杯，但仍有希望" },
+                { name: "聖杯 6", nameEn: "Six of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Cups06.jpg/330px-Cups06.jpg", upright: "懷舊、童年、回憶、單純", reversed: "沉溺過去、幼稚、不成熟", core: "回到過去的美好時光" },
+                { name: "聖杯 7", nameEn: "Seven of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Cups07.jpg/330px-Cups07.jpg", upright: "幻想、選擇、願望、幻覺", reversed: "清晰、務實、避免幻想", core: "七個幻象，需要明智的選擇" },
+                { name: "聖杯 8", nameEn: "Eight of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cups08.jpg/330px-Cups08.jpg", upright: "離開、追尋更深意義、放棄、退後", reversed: "停滯、害怕改變、逃避", core: "轉身離去，追尋心靈的答案" },
+                { name: "聖杯 9", nameEn: "Nine of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Cups09.jpg/330px-Cups09.jpg", upright: "心願達成、滿足、願望成真、快樂", reversed: "不滿足、貪心、物質主義", core: "九杯滿足，願望實現的幸福" },
+                { name: "聖杯 10", nameEn: "Ten of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Cups10.jpg/330px-Cups10.jpg", upright: "幸福美滿、家庭和諧、情感滿足", reversed: "不和諧的家庭、破裂關係、失望", core: "彩虹下的美滿家庭" },
+                { name: "聖杯侍從", nameEn: "Page of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Cups11.jpg/330px-Cups11.jpg", upright: "浪漫的訊息、創意、直覺", reversed: "情緒化、想像力過度、曖昧", core: "帶著愛的訊息的使者" },
+                { name: "聖杯騎士", nameEn: "Knight of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Cups12.jpg/330px-Cups12.jpg", upright: "浪漫的追求者、想像力、魅力", reversed: "浪漫的幻想、失望、操縱", core: "騎著白馬的浪漫追求者" },
+                { name: "聖杯皇后", nameEn: "Queen of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Cups13.jpg/330px-Cups13.jpg", upright: "情感豐富、同情心、直覺、溫柔", reversed: "情緒不穩定、依賴、幻滅", core: "充滿愛與直覺的皇后" },
+                { name: "聖杯國王", nameEn: "King of Cups", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Cups14.jpg/330px-Cups14.jpg", upright: "情感成熟、平衡、寬容、善意", reversed: "情緒波動、冷漠、操縱", core: "情感海洋中的平靜之王" }
+            ],
+            swords: [
+                { name: "寶劍 Ace", nameEn: "Ace of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Swords01.jpg/330px-Swords01.jpg", upright: "清晰的思想、新想法、突破、果斷", reversed: "混亂、誤導、破碎的承諾", core: "雙手捧著勝利之劍，真理的象徵" },
+                { name: "寶劍 2", nameEn: "Two of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Swords02.jpg/330px-Swords02.jpg", upright: "停滯、平衡、艱難的選擇、十字路口", reversed: "資訊過多、優柔寡斷、停滯不前", core: "雙手蒙眼，卻依然握劍" },
+                { name: "寶劍 3", nameEn: "Three of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Swords03.jpg/330px-Swords03.jpg", upright: "心碎、悲傷、痛苦、分離", reversed: "康復、寬恕、放下、恢復", core: "三把劍刺穿心臟，悲傷的深處" },
+                { name: "寶劍 4", nameEn: "Four of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Swords04.jpg/330px-Swords04.jpg", upright: "休息、恢復、休息、隱居", reversed: "過度休息、焦慮、內疚", core: "戰士在教堂休息，需要恢復" },
+                { name: "寶劍 5", nameEn: "Five of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Swords05.jpg/330px-Swords05.jpg", upright: "失敗、衝突、輸贏、背叛", reversed: "失敗後的重建、放下、和解", core: "衝突後的寂靜，有人慶祝有人悲傷" },
+                { name: "寶劍 6", nameEn: "Six of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Swords06.jpg/330px-Swords06.jpg", upright: "過渡、轉變、前進、康復", reversed: "停滯、阻礙、延長過渡", core: "渡過難關，前往更平靜的水域" },
+                { name: "寶劍 7", nameEn: "Seven of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Swords07.jpg/330px-Swords07.jpg", upright: "策略、欺騙、謊言、秘密", reversed: "坦白、誠實、面對現實", core: "偷偷摸摸離開，隐秘的行动" },
+                { name: "寶劍 8", nameEn: "Eight of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Swords08.jpg/330px-Swords08.jpg", upright: "限制、束縛、困境、被困", reversed: "釋放、擺脫限制、新的觀點", core: "被困在圍欄中，但其實可以解脫" },
+                { name: "寶劍 9", nameEn: "Nine of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Swords09.jpg/330px-Swords09.jpg", upright: "焦慮、噩夢、極度擔憂、痛苦", reversed: "康復、康復中、尋求幫助", core: "九把劍懸於頭上，焦慮的夜晚" },
+                { name: "寶劍 10", nameEn: "Ten of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Swords10.jpg/330px-Swords10.jpg", upright: "終結、痛苦、悲劇、最低點", reversed: "康復、恢復、準備重新開始", core: "十把劍刺穿背部，黑暗中的黎明" },
+                { name: "寶劍侍從", nameEn: "Page of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Swords11.jpg/330px-Swords11.jpg", upright: "好奇心、訊息、思維敏捷", reversed: "八卦、操縱、諷刺", core: "敏銳的年輕人，尋找真相" },
+                { name: "寶劍騎士", nameEn: "Knight of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Swords12.jpg/330px-Swords12.jpg", upright: "行動、決心、激烈的能量", reversed: "魯莽、憤怒、沒耐心", core: "全速前進的騎士，目標明確" },
+                { name: "寶劍皇后", nameEn: "Queen of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Swords13.jpg/330px-Swords13.jpg", upright: "獨立、智慧、清晰的溝通、洞察力", reversed: "殘忍、冷漠、批評過度", core: "坐在寶座上的睿智皇后" },
+                { name: "寶劍國王", nameEn: "King of Swords", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Swords14.jpg/330px-Swords14.jpg", upright: "理性、智慧、真相、清晰的思維", reversed: "操縱、不公平、冷酷", core: "權威的統治者，公平的裁決" }
+            ],
+            pentacles: [
+                { name: "星幣 Ace", nameEn: "Ace of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Pents01.jpg/330px-Pents01.jpg", upright: "新機會、繁榮、豐盛", reversed: "錯過的機會、缺乏計劃", core: "手中捧著金幣，財富的開始" },
+                { name: "星幣 2", nameEn: "Two of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Pents02.jpg/330px-Pents02.jpg", upright: "平衡、適應、優先順序", reversed: "失衡、过度、混亂", core: "舞動中的硬幣，需要平衡" },
+                { name: "星幣 3", nameEn: "Three of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pents03.jpg/330px-Pents03.jpg", upright: "團隊合作、技能、承諾", reversed: "缺乏團隊精神、冲突", core: "工匠在工作中，專業的合作" },
+                { name: "星幣 4", nameEn: "Four of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Pents04.jpg/330px-Pents04.jpg", upright: "囤積、保守、安全、穩定", reversed: "過度消費、浪费、開放", core: "紧紧抓住金钱，缺乏分享" },
+                { name: "星幣 5", nameEn: "Five of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Pents05.jpg/330px-Pents05.jpg", upright: "匱乏、困難、孤立、擔憂", reversed: "康復、恢復、改善", core: "風雪中的兩人，寻找帮助" },
+                { name: "星幣 6", nameEn: "Six of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pents06.jpg/330px-Pents06.jpg", upright: "慷慨、分享、給予和接受", reversed: "自私、债务、不平等", core: "施捨的藝術，平衡的給予" },
+                { name: "星幣 7", nameEn: "Seven of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pents07.jpg/330px-Pents07.jpg", upright: "耐心、承諾、獎勵、長遠目標", reversed: "缺乏耐心、急躁、回報延遲", core: "園丁等待作物，需要耐心" },
+                { name: "星幣 8", nameEn: "Eight of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Pents08.jpg/330px-Pents08.jpg", upright: "技藝、奉獻、精進、質量", reversed: "完美主義、缺乏熱情、工作狂", core: "工匠專注工作，追求完美" },
+                { name: "星幣 9", nameEn: "Nine of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Pents09.jpg/330px-Pents09.jpg", upright: "豐盛、獨立、優雅、自給自足", reversed: "過度依賴、自尊心低、工作狂", core: "花園中的女人，享受自己的成就" },
+                { name: "星幣 10", nameEn: "Ten of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pents10.jpg/330px-Pents10.jpg", upright: "財富、繼承、家庭、繁榮", reversed: "家庭衝突、財務問題、遺產", core: "大家庭的場景，世代的財富" },
+                { name: "星幣侍從", nameEn: "Page of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Pents11.jpg/330px-Pents11.jpg", upright: "學習、實踐、承諾、野心", reversed: "缺乏專注、拖延、浪費天賦", core: "腳踏實地的年輕人，追求成功" },
+                { name: "星幣騎士", nameEn: "Knight of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Pents12.jpg/330px-Pents12.jpg", upright: "務實、可靠、勤奋、承諾", reversed: "無聊、停滯、完美主義", core: "穩重前行的騎士，腳踏實地" },
+                { name: "星幣皇后", nameEn: "Queen of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Pents13.jpg/330px-Pents13.jpg", upright: "豐饒、實用、繁榮、養育", reversed: "過度保護、匱乏、不安全感", core: "照顧花園和家庭的女人" },
+                { name: "星幣國王", nameEn: "King of Pentacles", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Pents14.jpg/330px-Pents14.jpg", upright: "商業頭腦、繁榮、耐心、責任", reversed: "貪心、物質主義、缺乏遠見", core: "成功的企業家，财富的守护者" }
+            ]
+        };
+
+        function createCardItem(card, index, type) {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card-item';
+            cardEl.onclick = () => openModal(card, type, index);
+            cardEl.innerHTML = `
+                <div class="card-image">
+                    <img src="${card.image}" alt="${card.name}" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="card-name">${card.name}</div>
+                <div class="card-name-en">${card.nameEn}</div>
+            `;
+            return cardEl;
+        }
+
+        function createMajorArcanaGrid() {
+            const grid = document.getElementById('majorArcanaGrid');
+            majorArcana.forEach((card, index) => {
+                grid.appendChild(createCardItem(card, index, 'major'));
+            });
+        }
+
+        function createMinorArcanaGrids() {
+            const wandsGrid = document.getElementById('wandsGrid');
+            const cupsGrid = document.getElementById('cupsGrid');
+            const swordsGrid = document.getElementById('swordsGrid');
+            const pentaclesGrid = document.getElementById('pentaclesGrid');
+
+            minorArcana.wands.forEach((card, index) => wandsGrid.appendChild(createCardItem(card, index, 'wands')));
+            minorArcana.cups.forEach((card, index) => cupsGrid.appendChild(createCardItem(card, index, 'cups')));
+            minorArcana.swords.forEach((card, index) => swordsGrid.appendChild(createCardItem(card, index, 'swords')));
+            minorArcana.pentacles.forEach((card, index) => pentaclesGrid.appendChild(createCardItem(card, index, 'pentacles')));
+        }
+
+        function openModal(card, type, index) {
+            document.getElementById('modalCardImage').innerHTML = `<img src="${card.image}" alt="${card.name}">`;
+            const numLabel = type === 'major' ? `${card.num}. ` : '';
+            document.getElementById('modalCardName').textContent = `${numLabel}${card.name}`;
+            document.getElementById('modalCardEn').textContent = card.nameEn;
+            document.getElementById('modalUpright').textContent = card.upright;
+            document.getElementById('modalReversed').textContent = card.reversed;
+            document.getElementById('modalCore').textContent = card.core;
+            document.getElementById('cardModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('cardModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('cardModal').addEventListener('click', (e) => {
+            if (e.target.id === 'cardModal') closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 70;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        createMajorArcanaGrid();
+        createMinorArcanaGrids();
+    </script>
+</body>
+</html>
